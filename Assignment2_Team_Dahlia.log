@@ -1,0 +1,1307 @@
+621  /************************************************
+622  * Assignment No. 2
+623  * Team Member #1:   Sushil Kharel       ID: 40034732
+624  * Team Member #2:   Raghav Sharda       ID: 40017344
+625  * Team Member #3:   Jing Zhang          ID: 26259987
+626  * Team Member #4:   Haoran Ma           ID: 26932703
+627  * Team Member #5:   Stephen LaPierre    ID: 24146247
+628  *
+629  * Mark              __________/__________
+630  *************************************************/
+631
+632  LIBNAME Assign2 'C:\445\Course_data';
+NOTE: Libref ASSIGN2 was successfully assigned as follows:
+      Engine:        V9
+      Physical Name: C:\445\Course_data
+633  run;
+634
+635  /***************************************************
+636  *Textbook Question 12.6 by Hoaran Ma
+637  ****************************************************/
+638
+639  *using cat functions;
+640  data new_study;
+641  set Assign2.study;
+642  length GroupDose $ 6;
+643  GroupDose = catx('-',Group,Dose);
+644  run;
+
+NOTE: There were 5 observations read from the data set ASSIGN2.STUDY.
+NOTE: The data set WORK.NEW_STUDY has 5 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+645  title qusestion 6 using cat functions;
+646  proc print data=new_study;
+647  run;
+
+NOTE: There were 5 observations read from the data set WORK.NEW_STUDY.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+648
+649  *without using cat functions;
+650  data new_study_2;
+651  set Assign2.study;
+652  length GroupDose $ 6;
+653  GroupDose = trim(Group) || '-' || Dose;
+654  run;
+
+NOTE: There were 5 observations read from the data set ASSIGN2.STUDY.
+NOTE: The data set WORK.NEW_STUDY_2 has 5 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+655  title qusestion 6 without using cat functions;
+656  proc print data=new_study_2;
+657  run;
+
+NOTE: There were 5 observations read from the data set WORK.NEW_STUDY_2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+658
+659  /***************************************************
+660  *Textbook Question 12.10 by Hoaran Ma
+661  ****************************************************/
+662
+663  title question 12;
+664  proc print data=Assign2.errors;
+665  where findc(PartNumber,'XD','i');
+666  var Subj PartNumber;
+667  run;
+
+NOTE: There were 2 observations read from the data set ASSIGN2.ERRORS.
+      WHERE FINDC(PartNumber, 'XD', 'i');
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+668
+669  /***************************************************
+670  *Textbook Question 13.4 by Hoaran Ma
+671  ****************************************************/
+672
+673  data survey_any5;
+674  set Assign2.survey2;
+675  array Ques{5} Q1-Q5;
+676  Any5 = 'No ';
+677  do i = 1 to 5;
+678  if Ques{i} = 5 then do;
+679  Any5 = 'Yes';
+680  leave;
+681  end;
+682  end;
+683  drop i;
+684  run;
+
+NOTE: There were 4 observations read from the data set ASSIGN2.SURVEY2.
+NOTE: The data set WORK.SURVEY_ANY5 has 4 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+685  title ch13 question 4;
+686  proc print data=survey_any5;
+687  run;
+
+NOTE: There were 4 observations read from the data set WORK.SURVEY_ANY5.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+688
+689  /***************************************************
+690  *Textbook Question 14.2 by Raghav Sharda
+691  ****************************************************/
+692
+693  proc sort data= Assign2.sales_2010 out= A2S2010;
+694  by Region ;
+695  run;
+
+NOTE: There were 14 observations read from the data set ASSIGN2.SALES_2010.
+NOTE: The data set WORK.A2S2010 has 14 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+696
+697  title1 "Question 14.2 ";
+698  title2 "Sales Figures from the Sales Data Set";
+699
+700  proc print data = A2S2010 noobs ;
+701  by Region;
+702  id Region;
+703  var TotalSales Quantity ;
+704  sum TotalSales Quantity ;
+705  label EmpID = "Employee ID"
+706        TotalSales = "Total Sales"
+707        Quantity = "Number Sold";
+708  format TotalSales dollar10.2 Quantity comma7.;
+709  run;
+
+NOTE: There were 14 observations read from the data set WORK.A2S2010.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+710
+711  /***************************************************
+712  *Textbook Question 16.6 by Raghav Sharda
+713  ****************************************************/
+714
+715  /*Using the SAS data set College, report the mean and median GPA and ClassRank*/
+716  /*broken down by school size (SchoolSize). Do this twice, once using a BY statement,*/
+717  /*and once using a CLASS statemen*/
+718
+719  data q16by ;
+720  set Assign2.college;
+721  run;
+
+NOTE: There were 100 observations read from the data set ASSIGN2.COLLEGE.
+NOTE: The data set WORK.Q16BY has 100 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+722
+723
+724  proc sort data=q16by  out=q16sorted;
+725  by SchoolSize;
+726  run;
+
+NOTE: There were 100 observations read from the data set WORK.Q16BY.
+NOTE: The data set WORK.Q16SORTED has 100 observations and 6 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+727
+728  proc means data=q16sorted mean median;
+729  by SchoolSize;
+730  var GPA ClassRank;
+731  run;
+
+NOTE: There were 100 observations read from the data set WORK.Q16SORTED.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+732
+733  /******************************************/
+734  data q16class ;
+735  set Assign2.college;
+736  run;
+
+NOTE: There were 100 observations read from the data set ASSIGN2.COLLEGE.
+NOTE: The data set WORK.Q16CLASS has 100 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+737
+738  proc sort data=q16class  out=q16classsorted;
+739  by SchoolSize;
+740  run;
+
+NOTE: There were 100 observations read from the data set WORK.Q16CLASS.
+NOTE: The data set WORK.Q16CLASSSORTED has 100 observations and 6 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+741
+742  proc means data=q16classsorted mean median;
+743  class SchoolSize;
+744  var GPA ClassRank;
+745  run;
+
+NOTE: There were 100 observations read from the data set WORK.Q16CLASSSORTED.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+746
+747
+748  /**********************************************
+749  *Textbook Question 18.4 by Jing Zhang
+750  ***********************************************/
+751
+752  proc format;
+753  value $yesno 'Y','1' = 'Yes'
+754  'N','0' = 'No'
+755  ' ' = 'Not Given';
+NOTE: Format $YESNO is already on the library WORK.FORMATS.
+NOTE: Format $YESNO has been output.
+756  value $size 'S' = 'Small'
+757  'M' = 'Medium'
+758  'L' = 'Large'
+759  ' ' = 'Missing';
+NOTE: Format $SIZE is already on the library WORK.FORMATS.
+NOTE: Format $SIZE has been output.
+760  value $gender 'F' = 'Female'
+761  'M' = 'Male'
+762  ' ' = 'Not Given';
+NOTE: Format $GENDER is already on the library WORK.FORMATS.
+NOTE: Format $GENDER has been output.
+763  value ClassRank low-70="Low to 70"
+764                  71-high="71 and higher";
+NOTE: Format CLASSRANK is already on the library WORK.FORMATS.
+NOTE: Format CLASSRANK has been output.
+765  run;
+
+NOTE: PROCEDURE FORMAT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+766
+767  title "quesion 18.4";
+768  proc tabulate data=Assign2.College missing;
+769  class  ClassRank Gender Scholarship;
+770  table (Scholarship ALL),  ClassRank*(Gender All)*n="";
+771  keylabel ALL='Total';
+772  format ClassRank  ClassRank.;
+773  format Gender $gender.;
+774  run;
+
+NOTE: There were 100 observations read from the data set ASSIGN2.COLLEGE.
+NOTE: PROCEDURE TABULATE used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+775
+776  /**********************************************
+777  *Textbook Question 23.2 by Jing Zhang
+778  ***********************************************/
+779
+780  proc sort data=Assign2.Narrow;
+781      by Subj Time;
+782  run;
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+783  data Assign2.Narrow1;
+784      set Assign2.Narrow;
+785      by subj time;
+786      array S{5};
+787      retain S1-S5;
+788      if first.subj then call  missing(of S1-S5);
+789      S{Time}=Score;
+790      if last.subj then output;
+791      keep subj S1-S5;
+792  run;
+
+NOTE: There were 15 observations read from the data set ASSIGN2.NARROW.
+NOTE: The data set ASSIGN2.NARROW1 has 3 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+793
+794  proc print data=Assign2.Narrow1;
+795  run;
+
+NOTE: There were 3 observations read from the data set ASSIGN2.NARROW1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+796
+797  /***********************************************************
+798  * Text Book Question 24.2 by Stephen LaPierre
+799  ************************************************************/
+800
+801  /* create temporary data set from permanent data set Dailyprices*/
+802  data tempprices;
+803      set Assign2.dailyprices;
+804
+805  /* Manipulate tempprices to produce a table showing each stock symbol, its average price,
+806      how many transactions it had and its minimum and maxoimum prices */
+807
+
+NOTE: There were 17 observations read from the data set ASSIGN2.DAILYPRICES.
+NOTE: The data set WORK.TEMPPRICES has 17 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+808  proc means data=tempprices noprint nway;
+809  class Symbol;
+810  var Price;
+811  output out=values(drop = _freq_ _type_)
+812  mean= n= min= max= /autoname;
+813  run;
+
+NOTE: There were 17 observations read from the data set WORK.TEMPPRICES.
+NOTE: The data set WORK.VALUES has 5 observations and 5 variables.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+814
+815  title "Listing of Summary";
+816  proc print data=values noobs;
+817  run;
+
+NOTE: There were 5 observations read from the data set WORK.VALUES.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+818
+819  /***************************************************
+820  *Textbook Question 24.6 by Stephen LaPierre
+821  ****************************************************/
+822
+823  /* Create a table displaying each stock symbol's price and the difference between first day
+823! trrad and last day trade.
+824      All stcoks with only 1 trade are removed from the table. */
+825
+826  proc sort data=Assign2.dailyprices out=dailyprices;
+827  by Symbol Date;
+828  run;
+
+NOTE: There were 17 observations read from the data set ASSIGN2.DAILYPRICES.
+NOTE: The data set WORK.DAILYPRICES has 17 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+829  data diff_in_price;
+830  set dailyprices;
+831  by Symbol;
+832  if first.Symbol and last.Symbol then delete;
+833  if first.Symbol or last.Symbol then Difference = dif(Price);
+834  if last.Symbol then output;
+835  keep Symbol Price Difference;
+836  run;
+
+NOTE: There were 17 observations read from the data set WORK.DAILYPRICES.
+NOTE: The data set WORK.DIFF_IN_PRICE has 4 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+837
+838  title "Listing of differences";
+839  proc print data=diff_in_price noobs;
+840  run;
+
+NOTE: There were 4 observations read from the data set WORK.DIFF_IN_PRICE.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+841
+842  /***************************************************
+843  *Textbook Question 25.2 by Sushil Kharel
+844  ****************************************************/
+845
+846  %let a = 2;
+847  %let z = 7;
+848  data sqrt_table;
+849  do n = &a to &z;
+850  square = sqrt(n);
+851  output;
+852  end;
+853  run;
+
+NOTE: The data set WORK.SQRT_TABLE has 6 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+854  title "Square Root table";
+855  proc print data=sqrt_table noobs;
+856  run;
+
+NOTE: There were 6 observations read from the data set WORK.SQRT_TABLE.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+857
+858
+859  /***************************************************
+860  *Textbook Question 25.4 by Sushil Kharel
+861  ****************************************************/
+862
+863  %macro stats(dsn,class,vars );
+864  title "Stats from &dsn";
+865  proc means data=&dsn n mean min max maxdec=1;
+866  class &class;
+867  var &vars;
+868  run;
+869  %mend stats;
+870
+871  %stats(Assign2.bicycles, Country, Units TotalSales)
+
+NOTE: There were 18 observations read from the data set ASSIGN2.BICYCLES.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+872
+873  /************************************************
+874  * Assignment 2, Question 6 by Sushil Kharel
+875  *************************************************/
+876
+877  /*  a)  Write a MACRO PRINT_obs to print first k observations from the dataset DSN with title
+877!  containing
+878      information about how many observations are printed from which dataset. Run your macro
+878! %print_obs(mydata.discount, 5)*/
+879
+880
+881  %macro print_obs(dsn, k);
+882     title "Listing of the first &k obs from Data set &dsn";
+883     proc print data=&dsn(obs=&k) noobs;
+884     run;
+885  %mend print_obs;
+886
+887  %print_obs(Assign2.discount, 5)
+
+NOTE: There were 5 observations read from the data set ASSIGN2.DISCOUNT.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+888
+889
+890
+891  /***************************************************************************************/
+892  /***************************************************************************************/
+893  /***************************************************************************************/
+894
+895  /************************************************
+896  * Assignment 2, Question 2 by Hoaran Ma
+897  *************************************************/
+898
+899  *A they do actually effect the average chance of survial. the highest class should have more
+899! chance to survey. male are
+900  more than female;
+901
+902  PROC IMPORT OUT=data
+903              DATAFILE= "C:\445\course_data\train.csv"
+904              DBMS=CSV REPLACE;
+905              GETNAMES=YES;
+906              DATAROW=2;
+907  RUN;
+
+908   /**********************************************************************
+909   *   PRODUCT:   SAS
+910   *   VERSION:   9.4
+911   *   CREATOR:   External File Interface
+912   *   DATE:      04DEC18
+913   *   DESC:      Generated SAS Datastep Code
+914   *   TEMPLATE SOURCE:  (None Specified.)
+915   ***********************************************************************/
+916      data WORK.DATA    ;
+917      %let _EFIERR_ = 0; /* set the ERROR detection macro variable */
+918      infile 'C:\445\course_data\train.csv' delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2
+918!  ;
+919         informat PassengerId best32. ;
+920         informat Survived best32. ;
+921         informat Pclass best32. ;
+922         informat Name $57. ;
+923         informat Sex $6. ;
+924         informat Age best32. ;
+925         informat SibSp best32. ;
+926         informat Parch best32. ;
+927         informat Ticket $16. ;
+928         informat Fare best32. ;
+929         informat Cabin $4. ;
+930         informat Embarked $1. ;
+931         format PassengerId best12. ;
+932         format Survived best12. ;
+933         format Pclass best12. ;
+934         format Name $57. ;
+935         format Sex $6. ;
+936         format Age best12. ;
+937         format SibSp best12. ;
+938         format Parch best12. ;
+939         format Ticket $16. ;
+940         format Fare best12. ;
+941         format Cabin $4. ;
+942         format Embarked $1. ;
+943      input
+944                  PassengerId
+945                  Survived
+946                  Pclass
+947                  Name $
+948                  Sex $
+949                  Age
+950                  SibSp
+951                  Parch
+952                  Ticket $
+953                  Fare
+954                  Cabin $
+955                  Embarked $
+956      ;
+957      if _ERROR_ then call symputx('_EFIERR_',1);  /* set ERROR detection macro variable */
+958      run;
+
+NOTE: The infile 'C:\445\course_data\train.csv' is:
+      Filename=C:\445\course_data\train.csv,
+      RECFM=V,LRECL=32767,File Size (bytes)=61194,
+      Last Modified=January 09, 2017 14:33:20 o'clock,
+      Create Time=October 07, 2018 12:22:11 o'clock
+
+NOTE: 891 records were read from the infile 'C:\445\course_data\train.csv'.
+      The minimum record length was 48.
+      The maximum record length was 127.
+NOTE: The data set WORK.DATA has 891 observations and 12 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+891 rows created in WORK.DATA from C:\445\course_data\train.csv.
+
+
+
+NOTE: WORK.DATA data set was successfully created.
+NOTE: The data set WORK.DATA has 891 observations and 12 variables.
+NOTE: PROCEDURE IMPORT used (Total process time):
+      real time           1.01 seconds
+      cpu time            0.93 seconds
+
+
+959  proc freq data =data;
+960  table Survived pclass Sex;
+961  run;
+
+NOTE: There were 891 observations read from the data set WORK.DATA.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+962
+963  /* B - No answer */
+964
+965  *C
+966  NLEVELS option is going to determine the variables level.
+967  MISSPRINT shows the freq for missing value table.
+968  MISSING put missing values as nonmissing level for all TABLES variables.;
+969
+970  Proc freq data=data nlevels;
+971  table Survived Pclass Sex;
+972  run;
+
+NOTE: There were 891 observations read from the data set WORK.DATA.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+973  Proc freq data=data ;
+974  table Survived Pclass Sex / missprint;
+975  run;
+
+NOTE: There were 891 observations read from the data set WORK.DATA.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+976  Proc freq data=data ;
+977  table Survived Pclass Sex / missing;
+978  run;
+
+NOTE: There were 891 observations read from the data set WORK.DATA.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+979
+980  *D;
+981  title 'Histogram of Age for Survived';
+982  proc univariate data=data;
+983  var Age Survived;
+984  histogram Age / normal;
+985  run;
+
+NOTE: PROCEDURE UNIVARIATE used (Total process time):
+      real time           0.48 seconds
+      cpu time            0.15 seconds
+
+
+986
+987
+988  *E
+989  The outliers are the Extreme Observations, too high or too low.
+990  missing values are the values not shown on the data set. there are 263 total observations.
+991  the lowest value observed are 0.17, 0.33, 0.42, 0.67, 0.75 and the highest value observed are
+991!  71. 74, 76, 80.
+992  The min value is 0.17 and the max value is 80.;
+993
+994  /************************************************
+995  * Assignment 2, Question 3 by Jing Zhang
+996  *************************************************/
+997
+998  data Assign2.Names_And_More;
+999  input Name $16. Phone $16.  Height $10. Mixed $8.;
+1000  cards;
+
+NOTE: The data set ASSIGN2.NAMES_AND_MORE has 5 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1006  ;
+1007  run;
+1008
+1009  data Names_And_More_a;
+1010      set Assign2.Names_And_More;
+1011      Name=strip(Name);
+1012  run;
+
+NOTE: There were 5 observations read from the data set ASSIGN2.NAMES_AND_MORE.
+NOTE: The data set WORK.NAMES_AND_MORE_A has 5 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1013  proc print data=Names_And_More_a;
+1014  var Name;
+1015  run;
+
+NOTE: There were 5 observations read from the data set WORK.NAMES_AND_MORE_A.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+1016
+1017  data  Names_And_More_b;
+1018      set Assign2.Names_And_More;
+1019      Phone=compress(Phone,,'kd');
+1020  run;
+
+NOTE: There were 5 observations read from the data set ASSIGN2.NAMES_AND_MORE.
+NOTE: The data set WORK.NAMES_AND_MORE_B has 5 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1021  proc print data=Names_And_More_b;
+1022  var Phone;
+1023  run;
+
+NOTE: There were 5 observations read from the data set WORK.NAMES_AND_MORE_B.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1024
+1025  data  Names_And_More_c;
+1026      set Assign2.Names_And_More;
+1027      Mixed_num=round(SUM(scan(Mixed,1,""),(scan(scan(Mixed,2,""),1,"/")/scan(scan(Mixed,2,"")
+1027! ,2,"/"))),0.001);
+1028  run;
+
+NOTE: Character values have been converted to numeric values at the places given by:
+      (Line):(Column).
+      1027:25   1027:43   1027:72
+NOTE: Missing values were generated as a result of performing an operation on missing values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      1 at 1027:71
+NOTE: There were 5 observations read from the data set ASSIGN2.NAMES_AND_MORE.
+NOTE: The data set WORK.NAMES_AND_MORE_C has 5 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1029  proc print data=Names_And_More_c;
+1030  var Mixed_num;
+1031  run;
+
+NOTE: There were 5 observations read from the data set WORK.NAMES_AND_MORE_C.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1032
+1033
+1034  data  Names_And_More_d;
+1035      set Assign2.Names_And_More;
+1036      AreaCode=substr(phone,2,3);
+1037      phone=strip(scan(phone,2,")"));
+1038  run;
+
+NOTE: There were 5 observations read from the data set ASSIGN2.NAMES_AND_MORE.
+NOTE: The data set WORK.NAMES_AND_MORE_D has 5 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1039  proc print data=Names_And_More_d;
+1040  var AreaCode phone;
+1041  run;
+
+NOTE: There were 5 observations read from the data set WORK.NAMES_AND_MORE_D.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1042
+1043
+1044  /************************************************
+1045  * Assignment 2, Question 4 by Raghav Sharda
+1046  *************************************************/
+1047
+1048  DATA Assign2.dept_store;
+1049     LENGTH client_id shopping_instance DATE_shopping purchase 8;
+1050     format purchase dollar8.2 DATE_shopping DATE9.;
+1051     RETAIN DATE_shopping purchase;
+1052  /**/
+1053     DO client_id = 1 TO 1000000;
+1054         X1 = RANUNI(today());
+1055         X2 = RANUNI(678333);
+1056         X3 = RANUNI(122739);
+1057  /**/
+1058  /**/
+1059         IF X3 LT .65 THEN do;
+1060  /**/
+1061              GENDER = 'Male';
+1062  /**/
+1063  /**/
+1064  /**/
+1065                  DO shopping_instance = 1 TO ceil(X1*X3*10);
+1066  /**/
+1067                      if X2 LT .5 THEN Payment = 'Cash         ';
+1068                       ELSE IF X2 LT .80 THEN Payment = 'Credit card';
+1069                       ELSE Payment = 'Debit';
+1070  /**/
+1071                      IF shopping_instance = 1 THEN DO;
+1072                           DATE_shopping = 15929-INT(X2*600);
+1073                           purchase = X2*15 + X1*30;
+1074                           Item_cat_code=int(X1*10);
+1075                      END;
+1076  /**/
+1077                      ELSE DO;
+1078                          DATE_shopping = DATE_shopping + shopping_instance*(10 + INT(X1*50));
+1079                          purchase = purchase + INT(X2*10);
+1080                          Item_cat_code=int(X2*10);
+1081                      END;
+1082  /**/
+1083                       IF X2 LT .35 THEN Store = 'Montreal ';
+1084                         else IF X2 LT .8 THEN Store = 'Toronto';
+1085                         ELSE Store = 'Vancouver';
+1086  /**/
+1087                      OUTPUT;
+1088  /**/
+1089                end;
+1090  /**/
+1091        end;
+1092  /**/
+1093        ELSE do;
+1094  /**/
+1095               GENDER = 'Female';
+1096  /**/
+1097                  DO shopping_instance = 1 TO ceil(X1*X3*5);
+1098  /**/
+1099                      if X2 LT .7 THEN Payment = 'Cash         ';
+1100                       ELSE IF X2 LT .80 THEN Payment = 'Credit card';
+1101                       ELSE Payment = 'Debit';
+1102  /**/
+1103                      IF shopping_instance = 1 THEN DO;
+1104                           DATE_shopping = 13929-INT(X1*X2*300);
+1105                           purchase = X2*15 + X1*30;
+1106                           Item_cat_code=int(X1*10);
+1107                      END;
+1108  /**/
+1109                      ELSE DO;
+1110                          DATE_shopping = DATE_shopping + shopping_instance*(300 + INT(X2*50))
+1110! ;
+1111                          purchase = purchase + INT(X2*10);
+1112                          Item_cat_code=int(X2*10);
+1113                      END;
+1114  /**/
+1115                       IF X2 LT .35 THEN Store = 'Montreal ';
+1116                         else IF X2 LT .8 THEN Store = 'Toronto';
+1117                         ELSE Store = 'Vancouver';
+1118  /**/
+1119                      OUTPUT;
+1120  /**/
+1121                   end;
+1122                 end;
+1123  IF X1 LT .2 THEN LEAVE;
+1124  /**/
+1125  END;
+1126  DROP X1 X2 X3;
+1127  /**/
+1128  RUN;
+
+NOTE: The data set ASSIGN2.DEPT_STORE has 32 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+
+
+1129
+1130  /*PART A */
+1131  data parta;
+1132  set Assign2.dept_store;
+1133  run;
+
+NOTE: There were 32 observations read from the data set ASSIGN2.DEPT_STORE.
+NOTE: The data set WORK.PARTA has 32 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1134
+1135  proc freq data= parta (obs=1000);
+1136  tables client_id;
+1137  run;
+
+NOTE: There were 32 observations read from the data set WORK.PARTA.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+1138
+1139  PROC SGPLOT
+1140   DATA = parta;
+1141     HISTOGRAM client_id;
+1142    title "Histogram of Clien_Id";
+1143  RUN;
+
+NOTE: PROCEDURE SGPLOT used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.04 seconds
+
+NOTE: There were 32 observations read from the data set WORK.PARTA.
+
+1144
+1145  /*Part B*/
+1146
+1147  data gender;
+1148  set Assign2.dept_store;
+1149  run;
+
+NOTE: There were 32 observations read from the data set ASSIGN2.DEPT_STORE.
+NOTE: The data set WORK.GENDER has 32 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1150
+1151  proc sort data=gender out=gendersort;
+1152  by Gender Payment;
+1153  run;
+
+NOTE: There were 32 observations read from the data set WORK.GENDER.
+NOTE: The data set WORK.GENDERSORT has 32 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1154
+1155  proc print data = gendersort (obs = 100);
+1156  run;
+
+NOTE: There were 32 observations read from the data set WORK.GENDERSORT.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1157
+1158
+1159  /*No ,payment method does depend on Gender because after running the below code
+1160  the lines are straight
+1161  */
+1162
+1163  title "Scatter Plot of Gender by Payment";
+1164  symbol value=dot interpol=join width=2;
+1165  proc gplot data=gendersort;
+1166  plot Gender * Payment;
+1167  run;
+
+NOTE: 17750 bytes written to C:\Users\Stephen\AppData\Local\Temp\SAS Temporary
+      Files\_TD948_DESKTOP-872RS19_\gplot2.png.
+1168
+1169  /*Part C*/
+1170
+1171  /* Calculate the total value of all purchases for each client */
+1172
+
+NOTE: There were 32 observations read from the data set WORK.GENDERSORT.
+NOTE: PROCEDURE GPLOT used (Total process time):
+      real time           0.17 seconds
+      cpu time            0.15 seconds
+
+
+1173  data foreacht;
+1174  set Assign2.dept_store;
+1175
+
+NOTE: There were 32 observations read from the data set ASSIGN2.DEPT_STORE.
+NOTE: The data set WORK.FOREACHT has 32 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1176  proc sort data= foreacht out =foreachsort;
+1177  by client_id;
+1178  run;
+
+NOTE: There were 32 observations read from the data set WORK.FOREACHT.
+NOTE: The data set WORK.FOREACHSORT has 32 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1179
+1180  data tpurchase;
+1181  set foreachsort;
+1182  by client_id;
+1183  if FIRST.client_id then TotalPurchase = 0;
+1184  TotalPurchase + purchase;
+1185  if LAST.client_id;
+1186  run;
+
+NOTE: There were 32 observations read from the data set WORK.FOREACHSORT.
+NOTE: The data set WORK.TPURCHASE has 13 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1187
+1188  proc print data=tpurchase;
+1189  run;
+
+NOTE: There were 13 observations read from the data set WORK.TPURCHASE.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+
+
+1190
+1191
+1192  /*Print 5 highest spenders*/
+1193  title 'Helloboss';
+1194  data higestsal ;
+1195  set tpurchase;
+1196  run;
+
+NOTE: There were 13 observations read from the data set WORK.TPURCHASE.
+NOTE: The data set WORK.HIGESTSAL has 13 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1197
+1198  proc sort data = higestsal;
+1199  by DESCENDING  TotalPurchase;
+1200  /*drop = TotalPurchase;*/
+1201  run;
+
+NOTE: There were 13 observations read from the data set WORK.HIGESTSAL.
+NOTE: The data set WORK.HIGESTSAL has 13 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1202
+1203  proc print data = higestsal (obs = 5);
+1204  run;
+
+NOTE: There were 5 observations read from the data set WORK.HIGESTSAL.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1205
+1206  /*Part D*/
+1207
+1208  data dayselapsed;
+1209  set Assign2.dept_store;
+1210  run;
+
+NOTE: There were 32 observations read from the data set ASSIGN2.DEPT_STORE.
+NOTE: The data set WORK.DAYSELAPSED has 32 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1211
+1212  proc sort data = dayselapsed out= elapsedsort;
+1213  by client_id DATE_shopping;
+1214  run;
+
+NOTE: There were 32 observations read from the data set WORK.DAYSELAPSED.
+NOTE: The data set WORK.ELAPSEDSORT has 32 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1215
+1216  data limitinstances;
+1217  set elapsedsort;
+1218  where shopping_instance>=5;
+1219  run;
+
+NOTE: There were 1 observations read from the data set WORK.ELAPSEDSORT.
+      WHERE shopping_instance>=5;
+NOTE: The data set WORK.LIMITINSTANCES has 1 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1220
+1221  proc print data = limitinstances (obs = 20);
+1222  run;
+
+NOTE: There were 1 observations read from the data set WORK.LIMITINSTANCES.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+1223
+1224  data fresult;
+1225  set limitinstances;
+1226  by client_id;
+1227  if first.client_id then datevariable=0;
+1228  datevariable = last.DATE_shopping - first.DATE_shopping;
+1229  run;
+
+NOTE: Variable last.DATE_shopping is uninitialized.
+NOTE: Variable first.DATE_shopping is uninitialized.
+NOTE: There were 1 observations read from the data set WORK.LIMITINSTANCES.
+NOTE: The data set WORK.FRESULT has 1 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1230
+1231  proc print data = fresult;
+1232  var client_id datevariable;
+1233  run;
+
+NOTE: There were 1 observations read from the data set WORK.FRESULT.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1234
+1235
+1236  /*PART E*/
+1237
+1238  /*Answer comes out to be Dining Department from Vancouver */
+1239
+1240  data dept;
+1241  set Assign2.dept_store;
+1242  run;
+
+NOTE: There were 32 observations read from the data set ASSIGN2.DEPT_STORE.
+NOTE: The data set WORK.DEPT has 32 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1243  proc sort data = dept out = deptsort;
+1244  by Item_cat_code Store;
+1245  run;
+
+NOTE: There were 32 observations read from the data set WORK.DEPT.
+NOTE: The data set WORK.DEPTSORT has 32 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+1246
+1247  proc sql;
+1248  select Item_cat_code,Store , SUM(purchase) as TotalSales from deptsort
+1249  GROUP BY Item_cat_code , Store
+1250  order by TotalSales DESC;
+1251  quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+
+
+1252
+1253
+1254
+1255  /************************************************
+1256  * Assignment 2, Question 5 by Jing Zhang
+1257  *************************************************/
+1258
+1259  /*a*/
+1260  proc sort data=Assign2.Purchase_sort;by model;run;
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1261  proc  sort data=Assign2.Inventory;by model;run;
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1262  data Not_purchase_a;
+1263      merge Assign2.Inventory(in=ina) Assign2.Purchase_sort(in=inb);
+1264      by model;
+1265      if ina and not inb;
+1266  run;
+
+NOTE: There were 6 observations read from the data set ASSIGN2.INVENTORY.
+NOTE: There were 4 observations read from the data set ASSIGN2.PURCHASE_SORT.
+NOTE: The data set WORK.NOT_PURCHASE_A has 2 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+1267  proc print data=Not_purchase_a;
+1268  var Model Price;
+1269  run;
+
+NOTE: There were 2 observations read from the data set WORK.NOT_PURCHASE_A.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+1270
+1271  /*b*/
+1272  proc sql;
+1273      select Model,Price into:Model,:Price from Assign2.Inventory
+1274      where model not in (select model from Assign2.Purchase_sort);
+1275  quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+
+
+1276
+1277  /*C*/
+1278  /*Macros are particularly useful if you want to make your SAS programs more flexible and */
+1279  /*allow them to be used in different situations without having to rewrite entire programs.
+1279! */
+1280  /*Macro variables also provide a useful method for passing information from one DATA step */
+1281  /*to another. You can even select which procedures within a large program to run, depending
+1281! */
+1282  /*on the day of the week or the values in your data.*/
+1283
+1284
+1285  /*D*/
+1286  %macro bike_sale(DSN1,DSN2,Sold );
+1287
+1288  proc sort data=Assign2.&DSN1.;by model;run;
+1289  proc sort data=Assign2.&DSN2.;by model;run;
+1290
+1291  data Not_purchase_d;
+1292      merge Assign2.&DSN1.(in=ina) Assign2.&DSN2.(in=inb);
+1293      by model;
+1294      if ina and &Sold. inb;
+1295  run;
+1296
+1297  proc print data=Not_purchase_d;
+1298  var Model Price;
+1299  run;
+1300  %mend;
+1301  %bike_sale(inventory,purchase_sort,not);
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+
+
+
+NOTE: There were 6 observations read from the data set ASSIGN2.INVENTORY.
+NOTE: There were 4 observations read from the data set ASSIGN2.PURCHASE_SORT.
+NOTE: The data set WORK.NOT_PURCHASE_D has 2 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+
+
+
+NOTE: There were 2 observations read from the data set WORK.NOT_PURCHASE_D.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+
+
+
