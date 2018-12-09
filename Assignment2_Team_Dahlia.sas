@@ -1,10 +1,10 @@
 /************************************************
 * Assignment No. 2
-* Team Member #1: 	Sushil Kharel 		ID: 40034732
-* Team Member #2: 	Raghav Sharda 		ID: 40017344
-* Team Member #3: 	Jing Zhang			ID: 26259987
-* Team Member #4: 	Haoran Ma			ID: 26932703
-* Team Member #5: 	Stephen LaPierre	ID: 24146247
+* Team Member #1: 	Sushil Kharel 		
+* Team Member #2: 	Raghav Sharda 		
+* Team Member #3: 	Jing Zhang		
+* Team Member #4: 	Haoran Ma		
+* Team Member #5: 	Stephen LaPierre	
 *
 * Mark				__________/__________
 *************************************************/
